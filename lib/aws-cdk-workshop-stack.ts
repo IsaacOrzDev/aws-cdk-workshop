@@ -1,5 +1,6 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as apigw from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 
 export class AwsCdkWorkshopStack extends Stack {
@@ -9,7 +10,11 @@ export class AwsCdkWorkshopStack extends Stack {
     const hello = new lambda.Function(this, 'HelloHandler', {
       runtime: lambda.Runtime.NODEJS_14_X,
       code: lambda.Code.fromAsset('lambda'),
-      handler: 'hello.hanlder',
+      handler: 'hello.handler',
+    });
+
+    new apigw.LambdaRestApi(this, 'Endpoint', {
+      handler: hello,
     });
   }
 }
